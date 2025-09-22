@@ -1,0 +1,3 @@
+{"id": "94a5e1c3-ba11-4463-aaf5-7eeaed90ca47", "created_at": 1758549473166, "raw_text": "我想你", "summary": "", "keywords": [], "spectrum": {}, "metaphor_domain": "", "metaphor_seed": 0}
+{"id": "7d9ec488-f866-4a4c-b0f7-ff9303157909", "created_at": 1758550415891, "raw_text": "今天我的程序跑通了，我好爽啊", "summary": "我感到无比的喜悦和满足。", "keywords": ["喜悦", "满足"], "spectrum": {"valence": 1.0, "arousal": 0.5, "tones": ["喜乐"]}, "metaphor_domain": "湖水", "metaphor_seed": 92}
+{"id": "b8c2883f-44d6-49a8-8305-df999e67b2e8", "created_at": 1758550926193, "raw_text": "我想你", "summary": "用户表达了对你的依赖和感激之情。", "keywords": ["依赖", "感谢", "伞"], "spectrum": {"valence": 0.9, "arousal": 1.0, "tones": ["甜蜜", "温暖"]}, "metaphor_domain": "sparkle", "metaphor_seed": 42}
