@@ -9,7 +9,7 @@ from openai_client import call_chat_completion, RETRY_STATUS
 load_dotenv()
 BASE = os.getenv("OPENAI_API_BASE", "http://127.0.0.1:1234/v1")
 KEY  = os.getenv("OPENAI_API_KEY", "lm-studio")
-MODEL= os.getenv("MODEL_NAME", "qwen-7b-chat")
+MODEL= os.getenv("MODEL_NAME", "deepseek-r1-distill-qwen-14b")
 
 # 2) 读取系统提示和光谱
 with open(os.path.join("prompts","system_librarian.txt"), "r", encoding="utf-8") as f:
@@ -22,9 +22,85 @@ CENSOR = ["悲伤","难过","抑郁","委屈","孤独","失落","焦虑","紧张
           "绝望","快乐","高兴","开心","幸福","兴奋","满足","惊喜","安心",
           "平静","宁静","感动","想念","思念","怀念"]
 
+CODE_BLOCK_PATTERN = re.compile(r"```(?:\w+)?\s*\n(.*?)```", re.DOTALL)
+
+
+def _extract_braced_candidates(text: str):
+    candidates = []
+    stack = []
+    start = None
+    string_char = None
+    escape = False
+    for idx, ch in enumerate(text):
+        if string_char:
+            if escape:
+                escape = False
+                continue
+            if ch == "\\":
+                escape = True
+                continue
+            if ch == string_char:
+                string_char = None
+            continue
+        if ch in ('"', "'"):
+            string_char = ch
+            continue
+        if ch == '{':
+            if not stack:
+                start = idx
+            stack.append('{')
+        elif ch == '}' and stack:
+            stack.pop()
+            if not stack and start is not None:
+                candidates.append(text[start:idx + 1])
+                start = None
+    return candidates
+
+
+def _try_parse_dict(candidate: str):
+    candidate = candidate.strip()
+    if not (candidate.startswith('{') and candidate.endswith('}')):
+        return None
+    try:
+        data = json.loads(candidate)
+        if isinstance(data, dict):
+            return data
+    except Exception:
+        pass
+    try:
+        data = ast.literal_eval(candidate)
+        if isinstance(data, dict):
+            return data
+    except Exception:
+        pass
+    return None
+
+
+def parse_model_output(content: str) -> dict:
+    raw = content.strip()
+    if raw:
+        data = _try_parse_dict(raw)
+        if data is not None:
+            return data
+    for candidate in _extract_braced_candidates(content):
+        data = _try_parse_dict(candidate)
+        if data is not None:
+            return data
+    for block in CODE_BLOCK_PATTERN.findall(content):
+        block = block.strip()
+        data = _try_parse_dict(block)
+        if data is not None:
+            return data
+        match = re.search(r"return\s+({[\s\S]+?})", block)
+        if match:
+            data = _try_parse_dict(match.group(1))
+            if data is not None:
+                return data
+    raise ValueError('模型回复无法解析为 JSON。请调整提示词或降低温度')
+
 def aphasia_guard(text:str)->str:
     for w in CENSOR:
-        text = re.sub(w, "□", text)
+        text = re.sub(w, "*", text)
     return text
 
 def save_card(raw_text:str, draft:dict):
@@ -37,6 +113,7 @@ def save_card(raw_text:str, draft:dict):
         "summary": draft.get("summary",""),
         "keywords": draft.get("keywords",[]),
         "spectrum": draft.get("spectrum",{}),
+        "thinking": draft.get("thinking", ""),
         "metaphor_domain": draft.get("metaphor_domain",""),
         "metaphor_seed": draft.get("metaphor_seed",0)
     }
@@ -49,16 +126,17 @@ def main():
 
     # 3) 调本地模型（单轮对话）
     msg = [
-        {"role":"system","content": SYSTEM_PROMPT},
-        {"role":"user","content": f"user_input: {user_input}\ncontext_cards: []"}
-    ]
+    {"role": "system", "content": SYSTEM_PROMPT},
+    {"role": "user", "content": f"user_input: {user_input}\nemotion_schema: {json.dumps(EMO, ensure_ascii=False)}"}
+]
+
     # 加入重试，以缓解本地代理偶发 5xx/连接抖动
     delay = 1.0
     last_err = None
     resp = None
     for attempt in range(5):
         try:
-            resp = call_chat_completion(BASE, KEY, MODEL, msg, temperature=0.7, timeout=120)
+            resp = call_chat_completion(BASE, KEY, MODEL, msg, temperature=0.7, timeout=300)
             break
         except error.HTTPError as e:
             last_err = e
@@ -74,15 +152,8 @@ def main():
         raise last_err
     content = resp["choices"][0]["message"]["content"]
 
-    # 4) 粗暴解析：尝试提取 JSON（模型会输出 reply 和 draft 的文本）
-    # 约定：模型只输出一个对象，包含 reply 和 draft
-    try:
-        data = json.loads(content)
-    except:
-        # 如果模型前后带了说明文字，尝试抓取第一个 {...}
-        m = re.search(r"\{[\s\S]*\}", content)
-        assert m, "模型没有返回 JSON，可以再试一次或降低温度"
-        data = json.loads(m.group(0))
+    # 4) 粗暴解析：兼容模型带格式说明或代码块的输出
+    data = parse_model_output(content)
 
     reply = aphasia_guard(data.get("reply",""))
     draft = data.get("draft", {})

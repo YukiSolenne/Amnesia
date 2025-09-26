@@ -18,7 +18,8 @@
       "arousal": float (唤醒度, from 0.0 to 1.0),
       "tones": ["string", ...] (从提供的列表中选择)
     },
-    "metaphor_domain": "string (从 暴风雪/烛光灯/尘埃落/焰火花 中选择一个)",
+    "thinking": "在这里详细展示你的思考过程、联想和分析步骤。",
+    "metaphor_domain": "string (从emotion_schema 里的 domains里选择一个最相近的意象，或生成类似的意象)",
     "metaphor_seed": int
   }
 }
