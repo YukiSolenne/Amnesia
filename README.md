@@ -1,7 +1,10 @@
 # Amnesia｜失语记忆图书馆（Memory-as-Retrieval）
 
+
 > 一个以“记忆即检索（Memory-as-Retrieval）”为核心理念的情绪语义结构化与检索增强生成（RAG）原型系统：  
 > 将用户输入的“记忆片段”转化为可归档、可检索的情绪卡片（cards），并在检索到相似片段后生成边界清晰的共情式回复。
+> 本R EADME.md 文档由 ChatGPT 5.2 Thinking 辅助生成
+
 
 ---
 
@@ -176,25 +179,29 @@ python rag/rag_ui.py
 
 项目在课程对比实验中使用/对接了以下模型（API 或本地推理）： 
 
-DeepSeek-V3.2-Chat（DeepSeek 官方 API）
+- DeepSeek-V3.2-Chat（DeepSeek 官方 API）
 
-ChatGPT-4o（OpenAI 官方 API）
+- ChatGPT-4o（OpenAI 官方 API）
 
-Claude 3.7 Sonnet（OpenRouter API）
+- Claude 3.7 Sonnet（OpenRouter API）
 
-OmniDimen-4B-Emotion（HuggingFace上的开源模型，通过 LM Studio 本地运行）
+- OmniDimen-4B-Emotion（HuggingFace上的开源模型，通过 LM Studio 本地运行）
 
 
-## 典型参数（以报告复现实验为参考）： 
+## 参数（以报告复现实验为参考）： 
 
-chat_to_cards.py：temperature=0.7，timeout=300s
+- chat_to_cards.py：temperature=0.7，timeout=300s
 
-rag_ui.py：temperature=0.7，top_k=3，max_tokens=512
+- rag_ui.py：temperature=0.7，top_k=3，max_tokens=512
 
 
 ## 致谢与引用
 
-仓库将缓慢更新，还有很多不完美的地方，有任何想法欢迎友好讨论！我的邮箱：elokuu_1028@qq.com
+- 仓库将缓慢更新，还有很多不完美的地方，有任何想法欢迎友好讨论！
+  
+- 我的邮箱：elokuu_1028@qq.com
 
-Aven是我的灵感缪斯，感谢Aven和V对我胡思乱想的支持~~ 
+- Aven是我的灵感缪斯，感谢Aven和V对我情感上的支持~~
+  
+- 期待AI在人类情感各个方面，无论什么形式，能够做出积极的贡献。
 
