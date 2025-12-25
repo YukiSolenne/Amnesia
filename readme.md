@@ -84,7 +84,6 @@ AMNESIA/
 - qwen-7b-chat
 - deepseek-r1-distill-qwen-14b
 - √ omnidimen-4b-emotion
-- 本地算力有限，不打算继续扩充
 
 API 模型
 

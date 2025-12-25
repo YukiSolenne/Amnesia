@@ -1,3 +1,24 @@
-/.env
 /finetune
 /实验.docx
+# virtual env
+venv/
+.venv/
+
+# python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# dotenv
+.env
+
+# LM Studio / local models
+*.gguf
+models/
+
+# OS
+.DS_Store
+
+# Logs / cache
+*.log
+.cache/
