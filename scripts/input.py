@@ -1,4 +1,5 @@
-# 调本地模型，产出 reply+draft 并写入库
+# 批量阅读.csv文件并产出 reply+draft 写入库
+
 import os, json, time, uuid, re, ast
 from urllib import error
 from pathlib import Path

@@ -22,3 +22,5 @@ models/
 # Logs / cache
 *.log
 .cache/
+
+.pdf
