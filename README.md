@@ -23,7 +23,6 @@
   - [cards.jsonl 的 JSON Schema](#cardsjsonl-的-json-schema)
   - [情绪编码表（emotion_schema）](#情绪编码表emotion_schema)
 - [模型支持与实验设置](#模型支持与实验设置)
-- [隐私与合规建议](#隐私与合规建议)
 - [致谢与引用](#致谢与引用)
 
 
