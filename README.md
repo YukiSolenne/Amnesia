@@ -1,4 +1,4 @@
-# Amnesia｜失语记忆图书馆（Memory-as-Retrieval）
+# Amnesia｜失语记忆图书馆
 
 
 > - 一个以“记忆即检索（Memory-as-Retrieval）”为核心理念的情绪语义结构化与检索增强生成（RAG）原型系统：  
