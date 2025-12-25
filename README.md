@@ -1,12 +1,11 @@
 # Amnesia｜失语记忆图书馆（Memory-as-Retrieval）
 
 
-> 一个以“记忆即检索（Memory-as-Retrieval）”为核心理念的情绪语义结构化与检索增强生成（RAG）原型系统：  
-> 将用户输入的“记忆片段”转化为可归档、可检索的情绪卡片（cards），并在检索到相似片段后生成边界清晰的共情式回复。
-> 本R EADME.md 文档由 ChatGPT 5.2 Thinking 辅助生成
+> - 一个以“记忆即检索（Memory-as-Retrieval）”为核心理念的情绪语义结构化与检索增强生成（RAG）原型系统：  
+> - 将用户输入的“记忆片段”转化为可归档、可检索的情绪卡片（cards），并在检索到相似片段后生成边界清晰的共情式回复。
+> - 本README.md 文档由 ChatGPT 5.2 Thinking 辅助生成
 
 
----
 
 ## 目录
 
