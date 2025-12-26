@@ -41,7 +41,7 @@ Amnesia（失语记忆图书馆）是一个面向情感表达与信息组织的�
    - 将输入文本映射到统一的 JSON 结构：summary / keywords / 情绪光谱 / thinking / metaphor / reply。
      
 2. **情感思维链（CoT）呈现**
-   - 在 `thinking` 字段中给出情绪判断依据，便于解释与对比评测。 :contentReference[oaicite:4]{index=4}
+   - 在 `thinking` 字段中给出情绪判断依据，便于解释与对比
 
 3. **检索增强生成（RAG）**
    - 将 `cards.jsonl`、`README.md`、`logs.md` 等材料向量化入库，检索相似片段后生成回应；提供 Gradio 网页交互。
